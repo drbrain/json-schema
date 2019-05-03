@@ -466,25 +466,14 @@ module JSON
       end
 
       if !defined?(MultiJson)
-        if Gem::Specification::find_all_by_name('json').any?
-          require 'json'
-          @@available_json_backends << 'json'
-          @@json_backend = 'json'
-        else
-          # Try force-loading json for rubies > 1.9.2
-          begin
-            require 'json'
-            @@available_json_backends << 'json'
-            @@json_backend = 'json'
-          rescue LoadError
-          end
-        end
-
-
         if Gem::Specification::find_all_by_name('yajl-ruby').any?
           require 'yajl'
           @@available_json_backends << 'yajl'
           @@json_backend = 'yajl'
+        else
+          require 'json'
+          @@available_json_backends << 'json'
+          @@json_backend = 'json'
         end
 
         if @@json_backend == 'yajl'
