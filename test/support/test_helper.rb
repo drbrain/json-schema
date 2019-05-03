@@ -10,9 +10,13 @@ require 'webmock/minitest'
 
 require 'json-schema'
 
-Dir[File.join(File.expand_path('../', __FILE__), '*.rb')].each do |support_file|
-  require support_file unless support_file == __FILE__
-end
+require_relative "array_validation"
+require_relative "enum_validation"
+require_relative "number_validation"
+require_relative "object_validation"
+require_relative "strict_validation"
+require_relative "string_validation"
+require_relative "type_validation"
 
 class JSON::Schema::Test < Minitest::Test
   def schema_fixture_path(filename)
