@@ -76,14 +76,14 @@ class CustomFormatTest < JSON::Schema::Test
       schema = @schemas[version]
       prefix = "Validation for '#{version || 'default'}'"
 
-      assert(JSON::Validator.validate(schema, data), "#{prefix} succeeds with no 'custom' format validator registered")
+      assert_validate schema, data, "#{prefix} must succed with no 'custom' format validator registered"
 
       JSON::Validator.register_format_validator("custom", @format_proc, [version])
       data["a"] = "42"
-      assert(JSON::Validator.validate(schema, data), "#{prefix} succeeds with 'custom' format validator and correct data")
+      assert_validate schema, data, "#{prefix} must succeed with 'custom' format validator and correct data"
 
       data["a"] = "23"
-      assert(!JSON::Validator.validate(schema, data), "#{prefix} fails with 'custom' format validator and wrong data")
+      refute_validate schema, data, "#{prefix} must fail with 'custom' format validator and wrong data"
 
       errors = JSON::Validator.fully_validate(schema, data)
       assert_equal(errors.count, 1)

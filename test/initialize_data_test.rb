@@ -6,9 +6,9 @@ class InitializeDataTest < JSON::Schema::Test
     schema = {'type' => 'string'}
     data = 'hello world'
 
-    assert(JSON::Validator.validate(schema, data))
+    assert_validate schema, data
 
-    assert(JSON::Validator.validate(schema, data, :parse_data => false))
+    assert_validate schema, data, options: { parse_data: false }
 
     assert_raises(JSON::Schema::JsonParseError) do
       JSON::Validator.validate(schema, data, :json => true)
@@ -21,11 +21,11 @@ class InitializeDataTest < JSON::Schema::Test
     schema = {'type' => 'integer'}
     data = '42'
 
-    assert(JSON::Validator.validate(schema, data))
+    assert_validate schema, data
 
     refute(JSON::Validator.validate(schema, data, :parse_data => false))
 
-    assert(JSON::Validator.validate(schema, data, :json => true))
+    assert_validate schema, data, options: { json: true }
 
     assert_raises(JSON::Schema::JsonLoadError) { JSON::Validator.validate(schema, data, :uri => true) }
   end
@@ -34,11 +34,11 @@ class InitializeDataTest < JSON::Schema::Test
     schema = { 'type' => 'object', 'properties' => { 'a' => { 'type' => 'string' } } }
     data = '{"a": "b"}'
 
-    assert(JSON::Validator.validate(schema, data))
+    assert_validate schema, data
 
     refute(JSON::Validator.validate(schema, data, :parse_data => false))
 
-    assert(JSON::Validator.validate(schema, data, :json => true))
+    assert_validate schema, data, options: { json: true }
 
     assert_raises(JSON::Schema::UriError) { JSON::Validator.validate(schema, data, :uri => true) }
   end
@@ -47,11 +47,11 @@ class InitializeDataTest < JSON::Schema::Test
     schema = {'type' => 'string'}
     data = '"hello world"'
 
-    assert(JSON::Validator.validate(schema, data))
+    assert_validate schema, data
 
-    assert(JSON::Validator.validate(schema, data, :parse_data => false))
+    assert_validate schema, data, options: { parse_data: false }
 
-    assert(JSON::Validator.validate(schema, data, :json => true))
+    assert_validate schema, data, options: { json: true }
 
     assert_raises(JSON::Schema::JsonLoadError) { JSON::Validator.validate(schema, data, :uri => true) }
   end
@@ -60,9 +60,9 @@ class InitializeDataTest < JSON::Schema::Test
     schema = {'type' => 'string'}
     data = 'kapow'
 
-    assert(JSON::Validator.validate(schema, data))
+    assert_validate schema, data
 
-    assert(JSON::Validator.validate(schema, data, :parse_data => false))
+    assert_validate schema, data, options: { parse_data: false }
 
     assert_raises(JSON::Schema::JsonParseError) do
       JSON::Validator.validate(schema, data, :json => true)
@@ -77,15 +77,15 @@ class InitializeDataTest < JSON::Schema::Test
 
     stub_request(:get, "foo.bar").to_return(:body => '"hello world"', :status => 200)
 
-    assert(JSON::Validator.validate(schema, data))
+    assert_validate schema, data
 
-    assert(JSON::Validator.validate(schema, data, :parse_data => false))
+    assert_validate schema, data, options: { parse_data: false }
 
     assert_raises(JSON::Schema::JsonParseError) do
       JSON::Validator.validate(schema, data, :json => true)
     end
 
-    assert(JSON::Validator.validate(schema, data, :uri => true))
+    assert_validate schema, data, options: { uri: true }
   end
 
   def test_parse_invalid_uri_string
@@ -94,15 +94,15 @@ class InitializeDataTest < JSON::Schema::Test
 
     stub_request(:get, "foo.bar").to_timeout
 
-    assert(JSON::Validator.validate(schema, data))
+    assert_validate schema, data
 
-    assert(JSON::Validator.validate(schema, data, :parse_data => false))
+    assert_validate schema, data, options: { parse_data: false }
 
     stub_request(:get, "foo.bar").to_return(:status => [500, "Internal Server Error"])
 
-    assert(JSON::Validator.validate(schema, data))
+    assert_validate schema, data
 
-    assert(JSON::Validator.validate(schema, data, :parse_data => false))
+    assert_validate schema, data, options: { parse_data: false }
 
     assert_raises(JSON::Schema::JsonParseError) do
       JSON::Validator.validate(schema, data, :json => true)
@@ -115,9 +115,9 @@ class InitializeDataTest < JSON::Schema::Test
     schema = {'type' => 'string'}
     data = 'pick one: [1, 2, 3]'
 
-    assert(JSON::Validator.validate(schema, data))
+    assert_validate schema, data
 
-    assert(JSON::Validator.validate(schema, data, :parse_data => false))
+    assert_validate schema, data, options: { parse_data: false }
 
     assert_raises(JSON::Schema::JsonParseError) do
       JSON::Validator.validate(schema, data, :json => true)
@@ -130,9 +130,9 @@ class InitializeDataTest < JSON::Schema::Test
     schema = {'type' => 'integer'}
     data = 42
 
-    assert(JSON::Validator.validate(schema, data))
+    assert_validate schema, data
 
-    assert(JSON::Validator.validate(schema, data, :parse_data => false))
+    assert_validate schema, data, options: { parse_data: false }
 
     assert_raises(TypeError) { JSON::Validator.validate(schema, data, :json => true) }
 
@@ -143,9 +143,9 @@ class InitializeDataTest < JSON::Schema::Test
     schema = { 'type' => 'object', 'properties' => { 'a' => { 'type' => 'string' } } }
     data = { 'a' => 'b' }
 
-    assert(JSON::Validator.validate(schema, data))
+    assert_validate schema, data
 
-    assert(JSON::Validator.validate(schema, data, :parse_data => false))
+    assert_validate schema, data, options: { parse_data: false }
 
     assert_raises(TypeError) { JSON::Validator.validate(schema, data, :json => true) }
 

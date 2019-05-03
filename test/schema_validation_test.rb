@@ -124,8 +124,8 @@ class SchemaValidationTest < JSON::Schema::Test
 
   def test_draft03_validation
     data = {"b" => {"a" => 5}}
-    assert(JSON::Validator.validate(valid_schema_v3,data,:validate_schema => true, :version => :draft3))
-    assert(!JSON::Validator.validate(invalid_schema_v3,data,:validate_schema => true, :version => :draft3))
+    assert_validate valid_schema_v3, data, options: { validate_schema: true, version: :draft3 }
+    refute_validate invalid_schema_v3, data, options: { validate_schema: true, version: :draft3 }
   end
 
   def test_validate_just_schema_draft03
@@ -140,8 +140,8 @@ class SchemaValidationTest < JSON::Schema::Test
 
   def test_draft04_validation
     data = {"b" => {"a" => 5}}
-    assert(JSON::Validator.validate(valid_schema_v4,data,:validate_schema => true, :version => :draft4))
-    assert(!JSON::Validator.validate(invalid_schema_v4,data,:validate_schema => true, :version => :draft4))
+    assert_validate valid_schema_v4, data, options: { validate_schema: true, version: :draft4 }
+    refute_validate invalid_schema_v4, data, options: { validate_schema: true, version: :draft4 }
   end
 
   def test_validate_just_schema_draft04
@@ -155,16 +155,16 @@ class SchemaValidationTest < JSON::Schema::Test
 
   def test_validate_schema_3_without_version_option
     data = {"b" => {"a" => 5}}
-    assert(JSON::Validator.validate(valid_schema_v3,data,:validate_schema => true))
-    assert(!JSON::Validator.validate(invalid_schema_v3,data,:validate_schema => true))
+    assert_validate valid_schema_v3, data, options: { validate_schema: true }
+    refute_validate invalid_schema_v3, data, options: { validate_schema: true }
   end
 
   def test_schema_validation_from_different_directory
     Dir.mktmpdir do |tmpdir|
       Dir.chdir(tmpdir) do
         data = {"b" => {"a" => 5}}
-        assert(JSON::Validator.validate(valid_schema_v4,data,:validate_schema => true, :version => :draft4))
-        assert(!JSON::Validator.validate(invalid_schema_v4,data,:validate_schema => true, :version => :draft4))
+        assert_validate valid_schema_v4, data, options: { validate_schema: true, version: :draft4 }
+        refute_validate invalid_schema_v4, data, options: { validate_schema: true, version: :draft4 }
       end
     end
   end
@@ -180,6 +180,6 @@ class SchemaValidationTest < JSON::Schema::Test
       "biography" => nil,
       "demographic" => nil
     }
-    assert(JSON::Validator.validate!(symbolized_schema, data, :validate_schema => true))
+    assert_validate symbolized_schema, data, options: { validate_schema: true }
   end
 end

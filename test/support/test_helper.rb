@@ -40,8 +40,9 @@ class JSON::Schema::Test < Minitest::Test
   end
 
   def assert_validate(schema, data,
-                      message = "#{data.inspect} should be valid for:\n#{schema.inspect}")
-    valid = JSON::Validator.validate schema, data
+                      message = "#{data.inspect} should be valid for:\n#{schema.inspect}",
+                      options: {})
+    valid = JSON::Validator.validate schema, data, options
 
     assert valid, message
   end
@@ -52,8 +53,9 @@ class JSON::Schema::Test < Minitest::Test
   end
 
   def refute_validate(schema, data,
-                      message = "#{data.inspect} should be valid for:\n#{schema.inspect}")
-    valid = JSON::Validator.validate schema, data
+                      message = "#{data.inspect} should be valid for:\n#{schema.inspect}",
+                      options: {})
+    valid = JSON::Validator.validate schema, data, options
 
     refute valid, message
   end
