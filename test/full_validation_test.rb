@@ -13,8 +13,7 @@ class FullValidationTest < JSON::Schema::Test
       }
     }
 
-    errors = JSON::Validator.fully_validate(schema,data)
-    assert(errors.empty?)
+    assert_valid schema, data
 
     data = {"c" => 5}
     schema = {
@@ -44,8 +43,7 @@ class FullValidationTest < JSON::Schema::Test
       }
     }
 
-    errors = JSON::Validator.fully_validate(schema,data)
-    assert(errors.empty?)
+    assert_valid schema, data
 
     schema = {
       "type" => "object",
@@ -56,8 +54,7 @@ class FullValidationTest < JSON::Schema::Test
       }
     }
 
-    errors = JSON::Validator.fully_validate(schema,data)
-    assert(errors.empty?)
+    assert_valid schema, data
 
     data = {"b" => "a string"}
 
@@ -89,13 +86,11 @@ class FullValidationTest < JSON::Schema::Test
 
     data = {"b" => {"c" => "taco"}}
 
-    errors = JSON::Validator.fully_validate(schema,data)
-    assert(errors.empty?)
+    assert_valid schema, data
 
     data = {"b" => {"d" => 6}}
 
-    errors = JSON::Validator.fully_validate(schema,data)
-    assert(errors.empty?)
+    assert_valid schema, data
 
     data = {"b" => {"c" => 6, "d" => "OH GOD"}}
 
@@ -115,8 +110,7 @@ class FullValidationTest < JSON::Schema::Test
       }
     }
 
-    errors = JSON::Validator.fully_validate(schema,data,:errors_as_objects => true)
-    assert(errors.empty?)
+    assert_valid schema, data, errors_as_objects: true
 
     data = {"c" => 5}
     schema = {

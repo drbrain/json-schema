@@ -66,8 +66,7 @@ class Draft3Test < JSON::Schema::Test
     }
 
     data["a"] = [{"b" => 5}, {"c" => "foo"}]
-    errors = JSON::Validator.fully_validate(schema, data)
-    assert(errors.empty?, errors.join("\n"))
+    assert_valid schema, data
 
     # This should actually pass, because this matches the first schema in the union
     data["a"] << {"c" => false}
