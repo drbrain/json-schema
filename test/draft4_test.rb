@@ -240,7 +240,7 @@ class Draft4Test < JSON::Schema::Test
     data = {}
 
     assert_validate schema,data, options: { insert_defaults: true, strict: true }
-    assert(data['foo'] == 'view')
+    assert_equal "view", data["foo"]
   end
 
   def test_default_with_strict_and_oneof
@@ -271,7 +271,7 @@ class Draft4Test < JSON::Schema::Test
     }
 
     assert_validate schema, data, options: { insert_defaults: true, strict: true }
-    assert(!data.key?('foo'))
+    refute_includes data, "foo"
   end
 
   def test_self_reference

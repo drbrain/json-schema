@@ -29,7 +29,7 @@ class FullValidationTest < JSON::Schema::Test
     }
 
     errors = JSON::Validator.fully_validate(schema,data)
-    assert(errors.length == 2)
+    assert_equal 2, errors.length
   end
 
   def test_full_validation_with_union_types
@@ -59,7 +59,7 @@ class FullValidationTest < JSON::Schema::Test
     data = {"b" => "a string"}
 
     errors = JSON::Validator.fully_validate(schema,data)
-    assert(errors.length == 1)
+    assert_equal 1, errors.length
 
     schema = {
       "$schema" => "http://json-schema.org/draft-03/schema#",
@@ -95,7 +95,7 @@ class FullValidationTest < JSON::Schema::Test
     data = {"b" => {"c" => 6, "d" => "OH GOD"}}
 
     errors = JSON::Validator.fully_validate(schema,data)
-    assert(errors.length == 1)
+    assert_equal 1, errors.length
   end
 
 
@@ -127,11 +127,11 @@ class FullValidationTest < JSON::Schema::Test
 
     errors = JSON::Validator.fully_validate(schema,data,:errors_as_objects => true)
 
-    assert(errors.length == 2)
-    assert(errors[0][:failed_attribute] == "Required")
-    assert(errors[0][:fragment] == "#/")
-    assert(errors[1][:failed_attribute] == "TypeV4")
-    assert(errors[1][:fragment] == "#/c")
+    assert_equal 2, errors.length
+    assert_equal "Required", errors[0][:failed_attribute]
+    assert_equal "#/", errors[0][:fragment]
+    assert_equal "TypeV4", errors[1][:failed_attribute]
+    assert_equal "#/c", errors[1][:fragment]
   end
 
   def test_full_validation_with_nested_required_properties
