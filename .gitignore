@@ -1,8 +1,5 @@
-/.project
-.*.swp
-pkg
-*.gem
+/.bundle
 /Gemfile.lock
-.bundle
-.idea
 /coverage
+/gemfiles/*.lock
+/pkg
