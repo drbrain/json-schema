@@ -44,8 +44,6 @@ class JSON::Util::UUID
       version = [0, 16, 32, 48, 64, 80][v]
       nstr[6] &= 0b00001111
       nstr[6] |= version
-      #			nstr[7] &= 0b00001111
-      #			nstr[7] |= 0b01010000
       nstr[8] &= 0b00111111
       nstr[8] |= 0b10000000
       str = ''
@@ -55,9 +53,10 @@ class JSON::Util::UUID
 
     private :mask
 
-    # UUID generation using SHA1. Recommended over create_md5.
-    # Namespace object is another UUID, some of them are pre-defined below.
-    def create_sha1 str, namespace
+    # v5 UUID generation (using SHA1).
+    # Namespace object is another UUID, json-schema only uses one to generate
+    # URNs for schemas.
+    def create_v5 str, namespace
       sha1 = Digest::SHA1.new
       sha1.update namespace.raw_bytes
       sha1.update str
@@ -67,117 +66,7 @@ class JSON::Util::UUID
       ret.freeze
       ret
     end
-    alias :create_v5 :create_sha1
 
-    # UUID generation using MD5 (for backward compat.)
-    def create_md5 str, namespace
-      md5 = Digest::MD5.new
-      md5.update namespace.raw_bytes
-      md5.update str
-      sum = md5.digest
-      raw = mask 3, sum[0..16]
-      ret = new raw
-      ret.freeze
-      ret
-    end
-    alias :create_v3 :create_md5
-
-    # UUID  generation  using  random-number  generator.   From  it's  random
-    # nature, there's  no warranty that  the created ID is  really universaly
-    # unique.
-    def create_random
-      rnd = [
-        rand(0x100000000),
-        rand(0x100000000),
-        rand(0x100000000),
-        rand(0x100000000),
-      ].pack "N4"
-      raw = mask 4, rnd
-      ret = new raw
-      ret.freeze
-      ret
-    end
-    alias :create_v4 :create_random
-
-    def read_state fp			  # :nodoc:
-      fp.rewind
-      Marshal.load fp.read
-    end
-
-    def write_state fp, c, m  # :nodoc:
-      fp.rewind
-      str = Marshal.dump [c, m]
-      fp.write str
-    end
-
-    private :read_state, :write_state
-    STATE_FILE = 'ruby-uuid'
-
-    # create  the "version  1" UUID  with current  system clock,  current UTC
-    # timestamp, and the IEEE 802 address (so-called MAC address).
-    #
-    # Speed notice: it's slow.  It writes  some data into hard drive on every
-    # invokation. If you want to speed  this up, try remounting tmpdir with a
-    # memory based filesystem  (such as tmpfs).  STILL slow?  then no way but
-    # rewrite it with c :)
-    def create clock=nil, time=nil, mac_addr=nil
-      c = t = m = nil
-      Dir.chdir Dir.tmpdir do
-        unless FileTest.exist? STATE_FILE then
-          # Generate a pseudo MAC address because we have no pure-ruby way
-          # to know  the MAC  address of the  NIC this system  uses.  Note
-          # that cheating  with pseudo arresses here  is completely legal:
-          # see Section 4.5 of RFC4122 for details.
-          sha1 = Digest::SHA1.new
-          256.times do
-            r = [rand(0x100000000)].pack "N"
-            sha1.update r
-          end
-          str = sha1.digest
-          r = rand 14 # 20-6
-          node = str[r, 6] || str
-          nnode = node.bytes.to_a
-          nnode[0] |= 0x01
-          node = ''
-          nnode.each { |s| node << s.chr }
-          k = rand 0x40000
-          open STATE_FILE, 'w' do |fp|
-            fp.flock IO::LOCK_EX
-            write_state fp, k, node
-            fp.chmod 0o777 # must be world writable
-          end
-        end
-        open STATE_FILE, 'r+' do |fp|
-          fp.flock IO::LOCK_EX
-          c, m = read_state fp
-          c = clock % 0x4000 if clock
-          m = mac_addr if mac_addr
-          t = time
-          if t.nil? then
-            # UUID epoch is 1582/Oct/15
-            tt = Time.now
-            t = tt.to_i*10000000 + tt.tv_usec*10 + 0x01B21DD213814000
-          end
-          c = c.succ # important; increment here
-          write_state fp, c, m
-        end
-      end
-
-      tl = t & 0xFFFF_FFFF
-      tm = t >> 32
-      tm = tm & 0xFFFF
-      th = t >> 48
-      th = th & 0x0FFF
-      th = th | 0x1000
-      cl = c & 0xFF
-      ch = c & 0x3F00
-      ch = ch >> 8
-      ch = ch | 0x80
-      pack tl, tm, th, cl, ch, m
-    end
-    alias :create_v1 :create
-
-    # A  simple GUID  parser:  just ignores  unknown  characters and  convert
     # hexadecimal dump into 16-octet object.
     def parse obj
       str = obj.to_s.sub %r/\Aurn:uuid:/, ''
@@ -187,21 +76,15 @@ class JSON::Util::UUID
       ret.freeze
       ret
     end
-
-    # The 'primitive constructor' of this class
-    # Note UUID.pack(uuid.unpack) == uuid
-    def pack tl, tm, th, ch, cl, n
-      raw = [tl, tm, th, ch, cl, n].pack "NnnCCa6"
-      ret = new raw
-      ret.freeze
-      ret
-    end
   end
 
-  # The 'primitive deconstructor', or the dual to pack.
-  # Note UUID.pack(uuid.unpack) == uuid
+  # The 'primitive deconstructor'
   def unpack
     raw_bytes.unpack "NnnCCa6"
+  end
+
+  def inspect
+    "#<JSON::Util::UUID #{to_s}>"
   end
 
   # Generate the string representation (a.k.a GUID) of this UUID
@@ -250,12 +133,5 @@ class JSON::Util::UUID
     to_s <=> other.to_s
   end
 
-  # Pre-defined UUID Namespaces described in RFC4122 Appendix C.
-  NameSpace_DNS = parse "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
-  NameSpace_URL = parse "6ba7b811-9dad-11d1-80b4-00c04fd430c8"
-  NameSpace_OID = parse "6ba7b812-9dad-11d1-80b4-00c04fd430c8"
-  NameSpace_X500 = parse "6ba7b814-9dad-11d1-80b4-00c04fd430c8"
-
-  # The Nil UUID in RFC4122 Section 4.1.7
-  Nil = parse "00000000-0000-0000-0000-000000000000"
+  NAMESPACE = parse "8c4c3f97-c108-40a9-9f1a-93f94f825c76"
 end
