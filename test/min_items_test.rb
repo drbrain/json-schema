@@ -1,4 +1,4 @@
-require File.expand_path('../support/test_helper', __FILE__)
+require_relative "support/test_helper"
 
 class MinItemsTest < Minitest::Test
   def test_minitems_nils

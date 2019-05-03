@@ -1,4 +1,4 @@
-require File.expand_path('../support/test_helper', __FILE__)
+require_relative "support/test_helper"
 
 class Draft2Test < Minitest::Test
   def validation_errors(schema, data, options)

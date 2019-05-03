@@ -1,4 +1,4 @@
-require File.expand_path('../support/test_helper', __FILE__)
+require_relative "support/test_helper"
 
 class TypeAttributeTest < Minitest::Test
   def test_type_of_data

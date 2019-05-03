@@ -1,5 +1,6 @@
 # encoding: utf-8
-require File.expand_path('../support/test_helper', __FILE__)
+
+require_relative "support/test_helper"
 
 class Draft4Test < Minitest::Test
   def validation_errors(schema, data, options)

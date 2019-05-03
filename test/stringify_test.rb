@@ -1,4 +1,4 @@
-require File.expand_path('../support/test_helper', __FILE__)
+require_relative "support/test_helper"
 
 class StringifyTest < Minitest::Test
   def test_stringify_on_hash
