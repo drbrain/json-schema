@@ -1,10 +1,13 @@
 require_relative "support/test_helper"
 
 class ExtendsNestedTest < JSON::Schema::Test
-  ADDITIONAL_PROPERTIES = ['extends_and_additionalProperties_false_schema.json']
-  PATTERN_PROPERTIES = ['extends_and_patternProperties_schema.json']
+  ADDITIONAL_PROPERTIES = "extends_and_additionalProperties_false_schema.json"
+  PATTERN_PROPERTIES    = "extends_and_patternProperties_schema.json"
 
-  ALL_SCHEMAS = ADDITIONAL_PROPERTIES + PATTERN_PROPERTIES
+  ALL_SCHEMAS = [
+    ADDITIONAL_PROPERTIES,
+    PATTERN_PROPERTIES
+  ]
 
   def test_valid_outer
     ALL_SCHEMAS.each do |file|

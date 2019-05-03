@@ -16,11 +16,11 @@ end
 
 class JSON::Schema::Test < Minitest::Test
   def schema_fixture_path(filename)
-    File.join(File.dirname(__FILE__), '../schemas', filename)
+    File.expand_path "../schemas/#{filename}", __dir__
   end
 
   def data_fixture_path(filename)
-    File.join(File.dirname(__FILE__), '../data', filename)
+    File.expand_path "../data/#{filename}", __dir__
   end
 
   def assert_valid(schema, data, options = {}, msg = "#{data.inspect} should be valid for schema:\n#{schema.inspect}")
