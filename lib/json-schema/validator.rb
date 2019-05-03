@@ -354,7 +354,7 @@ module JSON
           Array(v.names).include?(schema_name)
         end
         if validator.nil? && raise_not_found
-          raise JSON::Schema::SchemaError.new("The requested JSON schema version is not supported")
+          raise JSON::Schema::SchemaError.new("The requested JSON schema #{schema_name} is not supported")
         else
           validator
         end
