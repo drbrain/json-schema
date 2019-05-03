@@ -1,7 +1,7 @@
 require_relative "support/test_helper"
 require 'json'
 
-class CommonTestSuiteTest < Minitest::Test
+class CommonTestSuiteTest < JSON::Schema::Test
   TEST_DIR = File.expand_path('../test-suite/tests', __FILE__)
 
   IGNORED_TESTS = YAML.load_file(File.expand_path('../support/test_suite_ignored_tests.yml', __FILE__))

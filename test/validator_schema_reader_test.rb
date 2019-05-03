@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class ValidatorSchemaReaderTest < Minitest::Test
+class ValidatorSchemaReaderTest < JSON::Schema::Test
 
   class MockReader < JSON::Schema::Reader
     def read(location)

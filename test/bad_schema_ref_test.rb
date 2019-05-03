@@ -2,7 +2,7 @@ require_relative "support/test_helper"
 require 'socket'
 
 
-class BadSchemaRefTest < Minitest::Test
+class BadSchemaRefTest < JSON::Schema::Test
   def setup
     WebMock.allow_net_connect!
   end

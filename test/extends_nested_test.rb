@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class ExtendsNestedTest < Minitest::Test
+class ExtendsNestedTest < JSON::Schema::Test
   ADDITIONAL_PROPERTIES = ['extends_and_additionalProperties_false_schema.json']
   PATTERN_PROPERTIES = ['extends_and_patternProperties_schema.json']
 

@@ -2,7 +2,7 @@
 
 require_relative "support/test_helper"
 
-class Draft4Test < Minitest::Test
+class Draft4Test < JSON::Schema::Test
   def validation_errors(schema, data, options)
     super(schema, data, :version => :draft4)
   end

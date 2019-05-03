@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class ExtendedSchemaTest < Minitest::Test
+class ExtendedSchemaTest < JSON::Schema::Test
   class BitwiseAndAttribute < JSON::Schema::Attribute
     def self.validate(current_schema, data, fragments, processor, validator, options = {})
       return unless data.is_a?(Integer)

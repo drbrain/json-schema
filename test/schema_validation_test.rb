@@ -1,7 +1,7 @@
 require_relative "support/test_helper"
 require 'tmpdir'
 
-class SchemaValidationTest < Minitest::Test
+class SchemaValidationTest < JSON::Schema::Test
   def valid_schema_v3
     {
       "$schema" => "http://json-schema.org/draft-03/schema#",

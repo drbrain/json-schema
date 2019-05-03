@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class StringifyTest < Minitest::Test
+class StringifyTest < JSON::Schema::Test
   def test_stringify_on_hash
     hash = {
       :a => 'foo',

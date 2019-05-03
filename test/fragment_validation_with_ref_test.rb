@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class FragmentValidationWithRefTest < Minitest::Test
+class FragmentValidationWithRefTest < JSON::Schema::Test
   def whole_schema
     {
       "$schema" => "http://json-schema.org/draft-04/schema#",

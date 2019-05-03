@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class CachingTestTest < Minitest::Test
+class CachingTestTest < JSON::Schema::Test
   def setup
     @schema = Tempfile.new(['schema', '.json'])
   end

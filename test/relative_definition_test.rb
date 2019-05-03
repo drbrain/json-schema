@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class RelativeDefinitionTest < Minitest::Test
+class RelativeDefinitionTest < JSON::Schema::Test
 
   def test_definition_schema
     assert_valid schema_fixture_path('definition_schema.json'), {"a" => 5}

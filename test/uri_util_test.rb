@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class UriUtilTest < Minitest::Test
+class UriUtilTest < JSON::Schema::Test
   def populate_cache_with(str, &blk)
     cached_uri = Addressable::URI.parse(str)
     Addressable::URI.stub(:parse, cached_uri, &blk)

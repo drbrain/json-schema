@@ -15,7 +15,7 @@ Dir[File.join(File.expand_path('../', __FILE__), '*.rb')].each do |support_file|
   require support_file unless support_file == __FILE__
 end
 
-class Minitest::Test
+class JSON::Schema::Test < Minitest::Test
   def suppress_warnings
     old_verbose = $VERBOSE
     $VERBOSE = nil

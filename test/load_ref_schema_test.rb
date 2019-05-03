@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class LoadRefSchemaTest < Minitest::Test
+class LoadRefSchemaTest < JSON::Schema::Test
   def load_other_schema
     JSON::Validator.add_schema(JSON::Schema.new(
       {

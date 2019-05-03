@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class FragmentResolutionTest < Minitest::Test
+class FragmentResolutionTest < JSON::Schema::Test
   def test_fragment_resolution
     schema = {
       "$schema" => "http://json-schema.org/draft-04/schema#",

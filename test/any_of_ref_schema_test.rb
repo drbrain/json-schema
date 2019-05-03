@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class AnyOfRefSchemaTest < Minitest::Test
+class AnyOfRefSchemaTest < JSON::Schema::Test
   def schema
     schema_fixture_path('any_of_ref_schema.json')
   end

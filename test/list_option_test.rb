@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class ListOptionTest < Minitest::Test
+class ListOptionTest < JSON::Schema::Test
   def test_list_option_reusing_schemas
     schema_hash = {
       "$schema" => "http://json-schema.org/draft-04/schema#",

@@ -1,7 +1,7 @@
 # encoding: utf-8
 require_relative "support/test_helper"
 
-class CustomFormatTest < Minitest::Test
+class CustomFormatTest < JSON::Schema::Test
   def setup
     @all_versions = ['draft1', 'draft2', 'draft3', 'draft4', 'draft6', nil]
     @format_proc = lambda { |value| raise JSON::Schema::CustomFormatError.new("must be 42") unless value == "42" }

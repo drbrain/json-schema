@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class RubySchemaTest < Minitest::Test
+class RubySchemaTest < JSON::Schema::Test
   def test_string_keys
     schema = {
       "type" => 'object',

@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class FullValidationTest < Minitest::Test
+class FullValidationTest < JSON::Schema::Test
 
   def test_full_validation
     data = {"b" => {"a" => 5}}

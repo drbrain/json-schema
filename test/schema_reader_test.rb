@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class SchemaReaderTest < Minitest::Test
+class SchemaReaderTest < JSON::Schema::Test
   ADDRESS_SCHEMA_URI  = 'http://json-schema.org/address'
   ADDRESS_SCHEMA_PATH = File.expand_path('../schemas/address_microformat.json', __FILE__)
 

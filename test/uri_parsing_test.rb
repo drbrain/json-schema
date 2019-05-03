@@ -1,7 +1,7 @@
 # coding: utf-8
 require_relative "support/test_helper"
 
-class UriParsingTest < Minitest::Test
+class UriParsingTest < JSON::Schema::Test
   def test_asian_characters
     schema = {
       "$schema"=> "http://json-schema.org/draft-04/schema#",

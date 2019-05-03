@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class InitializeDataTest < Minitest::Test
+class InitializeDataTest < JSON::Schema::Test
 
   def test_parse_character_string
     schema = {'type' => 'string'}

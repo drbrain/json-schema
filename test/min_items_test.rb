@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class MinItemsTest < Minitest::Test
+class MinItemsTest < JSON::Schema::Test
   def test_minitems_nils
     schema = {
       "type" => "array",

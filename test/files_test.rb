@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class FilesTest < Minitest::Test
+class FilesTest < JSON::Schema::Test
 
   #
   # These tests are ONLY run if there is an appropriate JSON backend parser available

@@ -1,6 +1,6 @@
 require_relative "support/test_helper"
 
-class MergeMissingValuesTest < Minitest::Test
+class MergeMissingValuesTest < JSON::Schema::Test
   def test_merge_missing_values_for_string
     original = 'foo'
     updated = 'foo'
