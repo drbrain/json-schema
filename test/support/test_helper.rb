@@ -39,9 +39,23 @@ class JSON::Schema::Test < Minitest::Test
     assert_equal([], errors, msg)
   end
 
+  def assert_validate(schema, data,
+                      message = "#{data.inspect} should be valid for:\n#{schema.inspect}")
+    valid = JSON::Validator.validate schema, data
+
+    assert valid, message
+  end
+
   def refute_valid(schema, data, options = {}, msg = "#{data.inspect} should be invalid for schema:\n#{schema.inspect}")
     errors = validation_errors(schema, data, options)
     refute_equal([], errors, msg)
+  end
+
+  def refute_validate(schema, data,
+                      message = "#{data.inspect} should be valid for:\n#{schema.inspect}")
+    valid = JSON::Validator.validate schema, data
+
+    refute valid, message
   end
 
   def validation_errors(schema, data, options)
