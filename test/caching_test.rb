@@ -29,9 +29,12 @@ class CachingTestTest < JSON::Schema::Test
   end
 
   def test_cache_schemas
-    suppress_warnings do
+    _, err = capture_io do
       JSON::Validator.cache_schemas = false
     end
+
+    assert_match '[DEPRECATION NOTICE]', err
+    assert_match 'Schema caching is now a validation option', err
 
     set_schema('type' => 'string')
     assert_valid(schema_path, 'foo', :clear_cache => false)
@@ -39,7 +42,7 @@ class CachingTestTest < JSON::Schema::Test
     set_schema('type' => 'number')
     assert_valid(schema_path, 123)
   ensure
-    suppress_warnings do
+    capture_io do
       JSON::Validator.cache_schemas = true
     end
   end
