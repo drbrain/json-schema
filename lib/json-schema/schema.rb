@@ -3,6 +3,15 @@ require 'pathname'
 module JSON
   class Schema
 
+    autoload :Error,             "json-schema/schema/error"
+    autoload :CustomFormatError, "json-schema/errors/custom_format_error"
+    autoload :JsonLoadError,     "json-schema/errors/json_load_error"
+    autoload :JsonParseError,    "json-schema/errors/json_parse_error"
+    autoload :SchemaError,       "json-schema/errors/schema_error"
+    autoload :SchemaParseError,  "json-schema/errors/schema_parse_error"
+    autoload :UriError,          "json-schema/errors/uri_error"
+    autoload :ValidationError,   "json-schema/errors/validation_error"
+
     attr_accessor :schema, :uri, :validator
 
     def initialize(schema,uri,parent_validator=nil)

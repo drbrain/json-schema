@@ -7,10 +7,6 @@ require 'thread'
 require 'yaml'
 
 require 'json-schema/schema/reader'
-require 'json-schema/errors/schema_error'
-require 'json-schema/errors/schema_parse_error'
-require 'json-schema/errors/json_load_error'
-require 'json-schema/errors/json_parse_error'
 require 'json-schema/util/uri'
 require 'json-schema/util/uuid'
 

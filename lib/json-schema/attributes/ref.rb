@@ -1,5 +1,4 @@
 require 'json-schema/attribute'
-require 'json-schema/errors/schema_error'
 require 'json-schema/util/uri'
 
 module JSON

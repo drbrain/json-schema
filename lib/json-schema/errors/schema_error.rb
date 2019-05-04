@@ -1,6 +1,2 @@
-module JSON
-  class Schema
-    class SchemaError < StandardError
-    end
-  end
+class JSON::Schema::SchemaError < JSON::Schema::Error
 end

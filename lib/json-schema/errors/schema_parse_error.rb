@@ -1,8 +1,4 @@
 require 'json/common'
 
-module JSON
-  class Schema
-    class SchemaParseError < JSON::ParserError
-    end
-  end
+class JSON::Schema::SchemaParseError < JSON::ParserError
 end

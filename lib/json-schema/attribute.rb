@@ -1,5 +1,3 @@
-require 'json-schema/errors/validation_error'
-
 module JSON
   class Schema
     class Attribute
