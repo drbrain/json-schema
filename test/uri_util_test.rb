@@ -3,6 +3,10 @@ require_relative "support/test_helper"
 class UriUtilTest < JSON::Schema::Test
   include JSON::Util::URI
 
+  def uri(uri)
+    Addressable::URI.parse uri
+  end
+
   def teardown
     clear_cache
   end
@@ -101,79 +105,79 @@ class UriUtilTest < JSON::Schema::Test
     uri = '#some-thing'
     base = 'http://www.example.com/foo/#bar'
 
-    assert_equal Addressable::URI.parse('http://www.example.com/foo/#some-thing'), normalize_ref(uri, base)
-    assert_equal Addressable::URI.parse('http://www.example.com/foo/#'), absolutize_ref(uri, base)
+    assert_equal uri('http://www.example.com/foo/#some-thing'), normalize_ref(uri, base)
+    assert_equal uri('http://www.example.com/foo/#'), absolutize_ref(uri, base)
   end
 
   def test_ref_file_path
     uri = '/some/thing'
     base = 'http://www.example.com/foo/#bar'
 
-    assert_equal Addressable::URI.parse('http://www.example.com/some/thing#'), normalize_ref(uri, base)
-    assert_equal Addressable::URI.parse('http://www.example.com/some/thing#'), absolutize_ref(uri, base)
+    assert_equal uri('http://www.example.com/some/thing#'), normalize_ref(uri, base)
+    assert_equal uri('http://www.example.com/some/thing#'), absolutize_ref(uri, base)
   end
 
   def test_ref_uri
     uri = 'http://foo-bar.com'
     base = 'http://www.example.com/foo/#bar'
 
-    assert_equal Addressable::URI.parse('http://foo-bar.com/#'), normalize_ref(uri, base)
-    assert_equal Addressable::URI.parse('http://foo-bar.com/#'), absolutize_ref(uri, base)
+    assert_equal uri('http://foo-bar.com/#'), normalize_ref(uri, base)
+    assert_equal uri('http://foo-bar.com/#'), absolutize_ref(uri, base)
   end
 
   def test_ref_uri_with_path
     uri = 'http://foo-bar.com/some/thing'
     base = 'http://www.example.com/foo/#bar'
 
-    assert_equal Addressable::URI.parse('http://foo-bar.com/some/thing#'), normalize_ref(uri, base)
-    assert_equal Addressable::URI.parse('http://foo-bar.com/some/thing#'), absolutize_ref(uri, base)
+    assert_equal uri('http://foo-bar.com/some/thing#'), normalize_ref(uri, base)
+    assert_equal uri('http://foo-bar.com/some/thing#'), absolutize_ref(uri, base)
   end
 
   def test_ref_uri_with_fragment
     uri = 'http://foo-bar.com/some/thing#foo'
     base = 'http://www.example.com/hello/#world'
 
-    assert_equal Addressable::URI.parse('http://foo-bar.com/some/thing#foo'), normalize_ref(uri, base)
-    assert_equal Addressable::URI.parse('http://foo-bar.com/some/thing#'), absolutize_ref(uri, base)
+    assert_equal uri('http://foo-bar.com/some/thing#foo'), normalize_ref(uri, base)
+    assert_equal uri('http://foo-bar.com/some/thing#'), absolutize_ref(uri, base)
   end
 
   def test_ref_uri_with_fragment_and_base_with_no_fragment
     uri = 'http://foo-bar.com/some/thing#foo'
     base = 'http://www.example.com/hello'
 
-    assert_equal Addressable::URI.parse('http://foo-bar.com/some/thing#foo'), normalize_ref(uri, base)
-    assert_equal Addressable::URI.parse('http://foo-bar.com/some/thing#'), absolutize_ref(uri, base)
+    assert_equal uri('http://foo-bar.com/some/thing#foo'), normalize_ref(uri, base)
+    assert_equal uri('http://foo-bar.com/some/thing#'), absolutize_ref(uri, base)
   end
 
   def test_ref_relative_path
     uri = 'hello/world'
     base = 'http://www.example.com/foo/#bar'
 
-    assert_equal Addressable::URI.parse('http://www.example.com/foo/hello/world#'), normalize_ref(uri, base)
-    assert_equal Addressable::URI.parse('http://www.example.com/foo/hello/world#'), absolutize_ref(uri, base)
+    assert_equal uri('http://www.example.com/foo/hello/world#'), normalize_ref(uri, base)
+    assert_equal uri('http://www.example.com/foo/hello/world#'), absolutize_ref(uri, base)
   end
 
   def test_ref_addressable_uri_with_host
     uri = Addressable::URI.new(:host => 'foo-bar.com')
     base = 'http://www.example.com/hello/#world'
 
-    assert_equal Addressable::URI.parse('http://www.example.com/foo-bar.com#'), normalize_ref(uri, base)
-    assert_equal Addressable::URI.parse('http://www.example.com/hello/#world'), absolutize_ref(uri, base)
+    assert_equal uri('http://www.example.com/foo-bar.com#'), normalize_ref(uri, base)
+    assert_equal uri('http://www.example.com/hello/#world'), absolutize_ref(uri, base)
   end
 
   def test_ref_addressable_uri_with_host_and_path
     uri = Addressable::URI.new(:host => 'foo-bar.com', :path => '/hello/world')
     base = 'http://www.example.com/a/#b'
 
-    assert_equal Addressable::URI.parse('http://www.example.com/foo-bar.com/hello/world#'), normalize_ref(uri, base)
-    assert_equal Addressable::URI.parse('http://www.example.com/hello/world'), absolutize_ref(uri, base)
+    assert_equal uri('http://www.example.com/foo-bar.com/hello/world#'), normalize_ref(uri, base)
+    assert_equal uri('http://www.example.com/hello/world'), absolutize_ref(uri, base)
   end
 
   def test_ref_addressable_uri_with_shceme_host_and_path
     uri = Addressable::URI.new(:scheme => 'https', :host => 'foo-bar.com', :path => '/hello/world')
     base = 'http://www.example.com/a/#b'
 
-    assert_equal Addressable::URI.parse('https://foo-bar.com/hello/world#'), normalize_ref(uri, base)
-    assert_equal Addressable::URI.parse('https://foo-bar.com/hello/world'), absolutize_ref(uri, base)
+    assert_equal uri('https://foo-bar.com/hello/world#'), normalize_ref(uri, base)
+    assert_equal uri('https://foo-bar.com/hello/world'), absolutize_ref(uri, base)
   end
 end
