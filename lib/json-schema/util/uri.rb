@@ -5,7 +5,9 @@ module JSON
     module URI
       SUPPORTED_PROTOCOLS = %w(http https ftp tftp sftp ssh svn+ssh telnet nntp gopher wais ldap prospero)
 
-      def self.normalized_uri(uri, base_path = Dir.pwd)
+      module_function
+
+      def normalized_uri(uri, base_path = Dir.pwd)
         normalized_uri = parse uri
 
         # Check for absolute path
@@ -16,7 +18,7 @@ module JSON
         file_uri data
       end
 
-      def self.absolutize_ref(ref, base)
+      def absolutize_ref(ref, base)
         ref_uri = strip_fragment(ref.dup)
 
         return ref_uri if ref_uri.absolute?
@@ -26,7 +28,7 @@ module JSON
         normalized_uri(uri)
       end
 
-      def self.normalize_ref(ref, base)
+      def normalize_ref(ref, base)
         ref_uri = parse(ref)
         base_uri = parse(base)
 
@@ -53,7 +55,7 @@ module JSON
         ref_uri
       end
 
-      def self.parse(uri)
+      def parse(uri)
         if uri.is_a?(Addressable::URI)
           return uri.dup
         else
@@ -69,7 +71,7 @@ module JSON
         raise JSON::Schema::UriError.new(e.message)
       end
 
-      def self.strip_fragment(uri)
+      def strip_fragment(uri)
         parsed_uri = parse(uri)
         if parsed_uri.fragment.nil? || parsed_uri.fragment.empty?
           parsed_uri
@@ -78,23 +80,23 @@ module JSON
         end
       end
 
-      def self.file_uri(uri)
+      def file_uri(uri)
         parsed_uri = parse(uri)
 
         Addressable::URI.convert_path(parsed_uri.path)
       end
 
-      def self.unescape_uri(uri)
+      def unescape_uri(uri)
         Addressable::URI.unescape(uri)
       end
 
-      def self.unescaped_path(uri)
+      def unescaped_path(uri)
         parsed_uri = parse(uri)
 
         Addressable::URI.unescape(parsed_uri.path)
       end
 
-      def self.clear_cache
+      def clear_cache
         @parse_cache = {}
       end
     end
