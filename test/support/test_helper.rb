@@ -27,7 +27,8 @@ class JSON::Schema::Test < Minitest::Test
     File.expand_path "../data/#{filename}", __dir__
   end
 
-  def assert_valid(schema, data, options = {}, msg = "#{data.inspect} should be valid for schema:\n#{schema.inspect}")
+  def assert_valid(schema, data, options = {},
+                   message = "#{data.inspect} should be valid for schema:\n#{schema.inspect}")
     errors = validation_errors(schema, data, options)
 
     assert_empty errors, message
