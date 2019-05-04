@@ -3,10 +3,6 @@ require_relative "support/test_helper"
 class UriUtilTest < JSON::Schema::Test
   include JSON::Util::URI
 
-  def uri(uri)
-    Addressable::URI.parse uri
-  end
-
   def teardown
     clear_cache
   end

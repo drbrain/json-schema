@@ -55,6 +55,10 @@ class JSON::Schema::Test < Minitest::Test
     refute valid, message
   end
 
+  def uri(uri)
+    Addressable::URI.parse uri
+  end
+
   def validation_errors(schema, data, options)
     options = { :clear_cache => true, :validate_schema => true }.merge(options)
     JSON::Validator.fully_validate(schema, data, options)

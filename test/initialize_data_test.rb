@@ -14,7 +14,13 @@ class InitializeDataTest < JSON::Schema::Test
       JSON::Validator.validate(schema, data, :json => true)
     end
 
-    assert_raises(JSON::Schema::JsonLoadError) { JSON::Validator.validate(schema, data, :uri => true) }
+    e = assert_raises JSON::Schema::JsonLoadError do
+      JSON::Validator.validate schema, data, uri: true
+    end
+
+    location = File.expand_path "../#{data}", __dir__
+
+    assert_equal uri("file://#{location}"), e.uri
   end
 
   def test_parse_integer_string
@@ -27,7 +33,13 @@ class InitializeDataTest < JSON::Schema::Test
 
     assert_validate schema, data, options: { json: true }
 
-    assert_raises(JSON::Schema::JsonLoadError) { JSON::Validator.validate(schema, data, :uri => true) }
+    e = assert_raises JSON::Schema::JsonLoadError do
+      JSON::Validator.validate schema, data, uri: true
+    end
+
+    location = File.expand_path "../#{data}", __dir__
+
+    assert_equal uri("file://#{location}"), e.uri
   end
 
   def test_parse_hash_string
@@ -53,7 +65,13 @@ class InitializeDataTest < JSON::Schema::Test
 
     assert_validate schema, data, options: { json: true }
 
-    assert_raises(JSON::Schema::JsonLoadError) { JSON::Validator.validate(schema, data, :uri => true) }
+    e = assert_raises JSON::Schema::JsonLoadError do
+      JSON::Validator.validate schema, data, uri: true
+    end
+
+    location = File.expand_path "../#{data}", __dir__
+
+    assert_equal uri("file://#{location}"), e.uri
   end
 
   def test_parse_plain_text_string
@@ -68,7 +86,13 @@ class InitializeDataTest < JSON::Schema::Test
       JSON::Validator.validate(schema, data, :json => true)
     end
 
-    assert_raises(JSON::Schema::JsonLoadError) { JSON::Validator.validate(schema, data, :uri => true) }
+    e = assert_raises JSON::Schema::JsonLoadError do
+      JSON::Validator.validate schema, data, uri: true
+    end
+
+    location = File.expand_path "../#{data}", __dir__
+
+    assert_equal uri("file://#{location}"), e.uri
   end
 
   def test_parse_valid_uri_string
@@ -108,7 +132,11 @@ class InitializeDataTest < JSON::Schema::Test
       JSON::Validator.validate(schema, data, :json => true)
     end
 
-    assert_raises(JSON::Schema::JsonLoadError) { JSON::Validator.validate(schema, data, :uri => true) }
+    e = assert_raises JSON::Schema::JsonLoadError do
+      JSON::Validator.validate schema, data, uri: true
+    end
+
+    assert_equal uri(data), e.uri
   end
 
   def test_parse_invalid_scheme_string

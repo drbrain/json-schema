@@ -574,13 +574,13 @@ module JSON
         begin
           open(uri.to_s).read
         rescue OpenURI::HTTPError, Timeout::Error => e
-          raise JSON::Schema::JsonLoadError, e.message
+          raise JSON::Schema::JsonLoadError, uri
         end
       else
         begin
           File.read(JSON::Util::URI.unescaped_path(uri))
         rescue SystemCallError => e
-          raise JSON::Schema::JsonLoadError, e.message
+          raise JSON::Schema::JsonLoadError, uri
         end
       end
     end
