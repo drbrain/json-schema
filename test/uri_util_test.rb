@@ -51,6 +51,11 @@ class UriUtilTest < JSON::Schema::Test
                                host: '',
                                path: '/home/foo/bar.json')
     assert_equal uri, JSON::Util::URI.normalized_uri(str, '/home')
+
+    uri = Addressable::URI.new(scheme: 'file',
+                               host: '',
+                               path: '/other/foo/bar.json')
+    assert_equal uri, JSON::Util::URI.normalized_uri(str, '/other')
   end
 
   def test_normalized_uri_for_file_path_with_host

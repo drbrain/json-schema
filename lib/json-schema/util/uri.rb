@@ -6,21 +6,14 @@ module JSON
       SUPPORTED_PROTOCOLS = %w(http https ftp tftp sftp ssh svn+ssh telnet nntp gopher wais ldap prospero)
 
       def self.normalized_uri(uri, base_path = Dir.pwd)
-        @normalize_cache ||= {}
-        normalized_uri = @normalize_cache[uri]
+        normalized_uri = parse uri
 
-        if !normalized_uri
-          normalized_uri = parse(uri)
-          # Check for absolute path
-          if normalized_uri.relative?
-            data = normalized_uri
-            data = File.join(base_path, data) if data.path[0,1] != "/"
-            normalized_uri = file_uri(data)
-          end
-          @normalize_cache[uri] = normalized_uri.freeze
-        end
+        # Check for absolute path
+        return normalized_uri unless normalized_uri.relative?
 
-        normalized_uri
+        data = normalized_uri
+        data = File.join base_path, data if data.path[0,1] != "/"
+        file_uri data
       end
 
       def self.absolutize_ref(ref, base)
@@ -103,7 +96,6 @@ module JSON
 
       def self.clear_cache
         @parse_cache = {}
-        @normalize_cache = {}
       end
     end
   end
