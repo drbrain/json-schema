@@ -19,13 +19,20 @@ class FragmentResolutionTest < JSON::Schema::Test
     refute_valid schema, data
     assert_valid schema, data, :fragment => "#/properties/a"
 
-    assert_raises JSON::Schema::SchemaError do
-      JSON::Validator.validate!(schema,data,:fragment => "/properties/a")
+    e = assert_raises ArgumentError do
+      JSON::Validator.validate!(schema, data, :fragment => "/properties/a")
     end
 
-    assert_raises JSON::Schema::SchemaError do
-      JSON::Validator.validate!(schema,data,:fragment => "#/properties/b")
+    assert_equal "Invalid fragment, \"/properties/a\" must start with \"#\"",
+                 e.message
+
+    e = assert_raises JSON::Schema::SchemaError do
+      JSON::Validator.validate!(schema, data, :fragment => "#/properties/b")
     end
+
+    assert_equal "#/properties/b", e.fragment
+    assert_kind_of JSON::Schema, e.schema
+    assert_equal %w[properties b], e.path
   end
 
   def test_odd_level_fragment_resolution

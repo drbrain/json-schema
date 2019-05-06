@@ -74,36 +74,46 @@ module JSON
 
       # ensure the first element was a hash, per the fragment spec
       if fragments.shift != "#"
-        raise JSON::Schema::SchemaError.new("Invalid fragment syntax in :fragment option")
+        raise ArgumentError, "Invalid fragment, #{fragment.inspect} must start with \"#\""
       end
 
-      fragments.each do |f|
-        if base_schema.is_a?(JSON::Schema) #test if fragment is a JSON:Schema instance
-          if !base_schema.schema.has_key?(f)
-            raise JSON::Schema::SchemaError.new("Invalid fragment resolution for :fragment option")
+      schema = base_schema
+
+      fragments.inject [] do |path, current|
+        path << current
+
+        case schema
+        when JSON::Schema
+          if !schema.schema.has_key?(current)
+            raise JSON::Schema::SchemaFragmentError.new(fragment, base_schema, path)
           end
-          base_schema = base_schema.schema[f]
-        elsif base_schema.is_a?(Hash)
-          if !base_schema.has_key?(f)
-            raise JSON::Schema::SchemaError.new("Invalid fragment resolution for :fragment option")
+          schema = schema.schema[current]
+        when Hash
+          if !schema.has_key?(current)
+            raise JSON::Schema::SchemaFragmentError.new(fragment, base_schema, path)
           end
-          base_schema = JSON::Schema.new(base_schema[f],schema_uri,@options[:version])
-        elsif base_schema.is_a?(Array)
-          if base_schema[f.to_i].nil?
-            raise JSON::Schema::SchemaError.new("Invalid fragment resolution for :fragment option")
+          schema = JSON::Schema.new(schema[current],schema_uri,@options[:version])
+        when Array
+          fragment_index = current.to_i
+          schema = schema[fragment_index]
+
+          if schema.nil?
+            raise JSON::Schema::SchemaFragmentError.new(fragment, base_schema, path)
           end
-          base_schema = JSON::Schema.new(base_schema[f.to_i],schema_uri,@options[:version])
+          schema = JSON::Schema.new(schema, schema_uri,@options[:version])
         else
-          raise JSON::Schema::SchemaError.new("Invalid schema encountered when resolving :fragment option")
+          raise JSON::Schema::SchemaFragmentError.new(fragment, base_schema, path)
         end
+
+        path
       end
 
       if @options[:list]
-        base_schema.to_array_schema
-      elsif base_schema.is_a?(Hash)
-        JSON::Schema.new(base_schema, schema_uri, @options[:version])
+        schema.to_array_schema
+      elsif schema.is_a?(Hash)
+        JSON::Schema.new(schema, schema_uri, @options[:version])
       else
-        base_schema
+        schema
       end
     end
 
