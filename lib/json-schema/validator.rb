@@ -525,7 +525,8 @@ module JSON
     end
 
     def initialize_schema(schema)
-      if schema.is_a?(String)
+      case schema
+      when String
         begin
           # Build a fake URI for this
           schema_uri = JSON::Util::URI.parse(fake_uri(schema))
@@ -556,7 +557,7 @@ module JSON
             schema
           end
         end
-      elsif schema.is_a?(Hash)
+      when Hash
         schema_uri = JSON::Util::URI.parse(fake_uri(serialize(schema)))
         schema = JSON::Schema.stringify(schema)
         schema = JSON::Schema.new(schema, schema_uri, @options[:version])
@@ -565,7 +566,7 @@ module JSON
         end
         self.class.add_schema(schema)
       else
-        raise JSON::Schema::SchemaParseError, "Invalid schema - must be either a string or a hash"
+        raise JSON::Schema::SchemaParseError, schema
       end
 
       schema
