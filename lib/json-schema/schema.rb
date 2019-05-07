@@ -10,6 +10,7 @@ module JSON
     autoload :NonexistentBackend,  "json-schema/errors/nonexistent_backend"
     autoload :SchemaError,         "json-schema/errors/schema_error"
     autoload :SchemaFragmentError, "json-schema/errors/schema_fragment_error"
+    autoload :SchemaMissing,       "json-schema/errors/schema_missing"
     autoload :SchemaParseError,    "json-schema/errors/schema_parse_error"
     autoload :UnknownBackend,      "json-schema/errors/unknown_backend"
     autoload :UriError,            "json-schema/errors/uri_error"

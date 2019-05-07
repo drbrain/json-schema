@@ -369,7 +369,7 @@ module JSON
         u = JSON::Util::URI.parse(schema_uri)
         validator = validators["#{u.scheme}://#{u.host}#{u.path}"]
         if validator.nil? && raise_not_found
-          raise JSON::Schema::SchemaError.new("Schema not found: #{schema_uri}")
+          raise JSON::Schema::SchemaMissing.new uri: schema_uri
         else
           validator
         end
@@ -381,8 +381,9 @@ module JSON
         validator = validators.values.detect do |v|
           Array(v.names).include?(schema_name)
         end
+
         if validator.nil? && raise_not_found
-          raise JSON::Schema::SchemaError.new("The requested JSON schema #{schema_name} is not supported")
+          raise JSON::Schema::SchemaMissing.new name: schema_name
         else
           validator
         end
