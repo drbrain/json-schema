@@ -67,8 +67,8 @@ module JSON
             @parse_cache[uri] = Addressable::URI.parse(uri)
           end
         end
-      rescue Addressable::URI::InvalidURIError => e
-        raise JSON::Schema::UriError.new(e.message)
+      rescue Addressable::URI::InvalidURIError
+        raise JSON::Schema::UriError, uri
       end
 
       def strip_fragment(uri)
